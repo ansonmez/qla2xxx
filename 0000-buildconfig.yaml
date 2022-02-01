@@ -1,0 +1,69 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  labels:
+    app: simple-kmod-driver-container
+  name: simple-kmod-driver-container
+  namespace: simple-kmod-demo
+spec: {}
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: simple-kmod-driver-build
+  name: simple-kmod-driver-build
+  namespace: simple-kmod-demo
+spec:
+  runPolicy: "Serial"
+  triggers:
+    - type: "ConfigChange"
+    - type: "ImageChange"
+  source:
+    git:
+      ref: "master"
+      uri: "https://github.com/openshift-psap/kvc-simple-kmod.git"
+    type: Git
+    dockerfile: |
+      FROM quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:71207482fa6fcef0e3ca283d0cafebed4d5ac78c62312fd6e19ac5ca2294d296
+
+      WORKDIR /build/
+
+      RUN yum -y install git make sudo gcc \
+      && yum clean all \
+      && rm -rf /var/cache/dnf
+
+      # Expecting kmod software version as an input to the build
+      ARG KMODVER
+
+      # Grab the software from upstream
+      RUN git clone https://github.com/ansonmez/qla2xxx.git
+      WORKDIR qla2xxx
+
+      # Prep and build the module
+      #RUN make buildprep KVER=$(rpm -q --qf "%{VERSION}-%{RELEASE}.%{ARCH}"  kernel-core) KMODVER=${KMODVER} \
+      #&& make all       KVER=$(rpm -q --qf "%{VERSION}-%{RELEASE}.%{ARCH}"  kernel-core) KMODVER=${KMODVER} \
+      #&& make install   KVER=$(rpm -q --qf "%{VERSION}-%{RELEASE}.%{ARCH}"  kernel-core) KMODVER=${KMODVER}
+      RUN ./extras/build.sh install
+
+      # Add the helper tools
+      WORKDIR /root/kvc-simple-kmod
+      ADD Makefile .
+      ADD simple-kmod-lib.sh .
+      ADD simple-kmod-wrapper.sh .
+      ADD simple-kmod.conf .
+      RUN mkdir -p /usr/lib/kvc/ \
+      && mkdir -p /etc/kvc/ \
+      && make install
+
+      RUN systemctl enable kmods-via-containers@simple-kmod
+  strategy:
+    dockerStrategy:
+      buildArgs:
+        - name: KMODVER
+          value: DEMO
+  output:
+    to:
+      kind: ImageStreamTag
+      name: simple-kmod-driver-container:demo
+
