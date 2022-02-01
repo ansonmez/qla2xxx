@@ -1,0 +1,720 @@
+/******************************************************************************
+ *			Marvell Driver Release Notes
+ *				Marvell INC.
+ *			   All rights reserved.
+ *
+ * Copyright (c)  2003-2016 QLogic Corporation
+ * Copyright (c)  2016-2018 Cavium Inc
+ * Copyright (c)  2019-2021 Marvell Semiconductor, Inc.
+ *
+ * See LICENSE.qla2xxx for copyright and licensing details.
+ *
+ *****************************************************************************/
+/*
+ * Revision History
+ */
+
+Table of Contents
+
+1. Change History
+2. Known Issues
+3. Notices
+4. Contacting Support
+
+
+1. Changes History
+
+* 10.02.05.01-k              BH                      06/30/2021
+ * ERXXXXXX: qla2xxx: Check for firmware capability before creating QPair.
+   Change: Move the check for FW attributes to right location.
+	   This check is specific for ISP25XX.
+
+* 10.02.05.00-k              BH                      06/19/2021
+  * ERXXXXXX: Reserve extra IRQ vectors
+    Changes : qla2xxx: prevents unbalanced QP allocation where nr_hw_queues
+	is two less than the number of CPUs.
+
+  * FCD-268: Multiple USCM ELS are sent
+  * FCD-280: Fix issues reported by running a few Jammer tests
+    Changes: qla2xxx: Retry the USCM ELS 3 times when there are failures.
+
+  * FCD-172: build.sh: Fix udev script installation error
+
+  * ER148402: Install restrictions when binary rpm is already installed.
+    Changes: qla2xxx: Updated README file for documentation
+
+  * ERXXXXXX: qla2xxx: Support kdump kernel for NVMe BFS.
+  * ERXXXXXX: qla2xxx: Update README file for building kdump initrd in NVMe BFS.
+
+* 10.02.05.00.a9-k              BH                      05/31/2021
+  * ER148402: Disallow install if qla2xxx rpm is installed.
+    Changes: qla2xxx: Prevent install from source if rpm is installed.
+
+  * FCD-230: Add additional debug logs
+    Changes: qla2xxx: Add additional logs to differentiate between
+	FW driver and driver driven ELS
+
+  *FCD-XXXX: Changes to support kdump kernel.
+   Changes: qla2xxx: Don't allocate fw dump for kexec kernel and
+	Allocate single Q for kexec kernel.
+
+  * FCD-227: Linux Driver order of RDF to follow EDC ELS
+
+  * FCD-225 - Qaucli fails to list scm stats for Qlipper
+
+  * FCD-172: fix udev rule
+   Changes: qla2xxx: permission of the rule file set to 644
+
+* 10.02.05.00.a8-k              BH                      05/21/2021
+  * ER148529: NVMe initiator connected to brocade fabric are down
+    Changes: qla2xxx: Fix hang on NVME command timeouts.
+
+  * ER148531: SN1600Q/SN1610Q, Gen10PlusSnap4 -  Async-login failed errors on BFS boot-up-QXCR1001796980
+    Changes: qla2xxx: Suppress unnecessary log messages during login
+
+  * ER148578: Observed that initiator is sending prli type 0x8 for for nvme ports
+    Changes: qla2xxx: fix NVME | FCP personality change.
+
+  * ER148141: Driver vmkmgt: Don't differentiate Signals and FPIN's for the Congestion counters when they detected.
+    Changes: qla2xxx: Split congestion warnings and alarms based on signals and FPINs
+
+  * ERXXXXXX: Add support for marginal path.
+    Changes: qla2xxx: Added support for eh_should_retry_cmd callback in qla2xxx host template.
+
+  * ERXXXXXX: scsi: qla2xxx: Flush all sessions on zone disable
+  * ERXXXXXX: scsi: qla2xxx: Fix memory size truncation
+  * ERXXXXXX: scsi: qla2xxx: Fix a NULL pointer dereference in an error path
+  * ERXXXXXX: qla2xxx: fix sparse warning.
+  * ERXXXXXX: qla2xxx: edif: do secure plogi when auth app is present
+  * ERXXXXXX: qla2xxx: Add license.
+  * ERXXXXXX: qla2xxx: USCM - Do not send EDC/RDF ELS when firmware has already sent it
+  * ERXXXXXX: qla2xxx: Inclusion words are applied on release note and readme file
+  * ERXXXXXX: qla2xxx: edif: add N2N support for EDIF
+  * ERXXXXXX: qla2xxx: Updated drelease.notes header
+  * ERXXXXXX: qla2xxx: Fix hang during NVME session tear down.
+  * ERXXXXXX: qla2xxx: USCM: Cleaned up a few debug messages
+  * ERXXXXXX: qla2xxx: edif: fix edif enable flag
+
+* 10.02.05.00.a7-k              BH                      04/23/2021
+  * ER148546: USCM: QCC Cong Mgmt not available on port with FW:v9.07.00 and DVR:v10.02.05.00.a6-k 
+    Changes: qla2xxx: setting the flags to indicate to the application that the RDF is complete and
+     SCM is supported.
+
+  * ERXXXXXX: Add heartbeat check
+    Changes: qla2xxx: Use 'no-op' mailbox command to check to see if FW is still responsive.
+
+  * ERXXXXXX: DEBUG: simulate FW hang.
+    Changes: qla2xxx: Driver will detect the hang and recover via hearbeat check.
+
+  * ERXXXXXX: qla2xxx: Check for FW attributes before enabling MQ.
+  * ERXXXXXX: qla2xxx: USCM Handle ELS errors from switch by retrying 3 times
+  * ERXXXXXX: scsi: qla2xxx: Correct the supported speeds for 16G Mezz card.
+
+
+* 10.02.05.00.a6-k              BH                      04/09/2021
+  * ER148472: With NPIV ports, link bounce causes loss of strongSwan session at the target.
+    Changes: qla2xxx: : fix npiv create errorneous error
+             qla2xxx: EDIF: reject AUTH ELS on session down.
+             qla2xxx: edif: Fix stale session
+
+  * ER148478: System Crash while NPIV RAW IO ON VPORT LUNS on SLES15 SP3 + QLE 2692 + R7525
+    Changes: qla2xxx: fix unsafe removal from link list.
+
+  * ERXXXXXX: qla2xxx: USCM - Send EDC and RDF ELS from the driver
+
+* 10.02.05.00.a5-k              BH                      04/01/2021
+  * ER147707: Device recovery not happening and OS hungs on qla2xxx
+    Changes: qla2xxx: v2: fix crash in PCIe error handling
+  * ER148123: Issue with Max secure connection with override_lower_limits
+    Changes: qla2xxx: v2: fix stuck session
+
+* 10.02.05.00.a4-k              BH                      03/25/2021
+  * ER148402: SLES, Driver Install location is inconsistent.
+    Changes: qla2xxx: Fix driver install location for SLES
+
+  * ER148123: Issue with Max secure connection with override_lower_limits
+              set and rekey/reauth with240/480-luns disconnected after 2 hr traffi
+    Changes: qla2xxx: edif: doorbell tweak
+
+  * ER148448: Issue w.r.t qaucli, where Remote type "Unknown" for eDIF env. 
+              for qaucli2.4.0.build 20
+    Changes: qla2xxx: fix port type info
+
+  * ER148433: The log does not show a valid data rate while the link speed is 64G.
+    Changes: qla2xxx: fix debug print of 64G link speed.
+
+  * ER147650: 'show fdmi’ command does not list “ OS Name and Version” 
+               parameter for SLES12SP4-QXCR1001771822
+    Changes: qla2xxx: Show OS name and version in FDMI-1
+
+* 10.02.05.00.a3-k              BH                      03/11/2021
+  * ER147707: Device recovery not happening and OS hungs on qla2xxx
+     Changes: qla2xxx: fix mailbox recovery during PCIE error
+              qla2xxx: v2: fix crash in PCIe error handling
+  * ERXXXXXX: qla2xxx: Changes to support FCP2 Target.
+  * ERXXXXXX: qla2xxx: include AER debug mask to default
+
+* 10.02.05.00.a2-k              BH                      03/04/2021
+  * ERXXXXXX: qla2xxx: fixes for compilation on RH8.4
+  * ERXXXXXX: qla2xxx: Do logout even if fabric scan retries got exhausted.
+
+* 10.02.05.00.a1-k              BH                      02/27/2021
+* EDIF Changes:
+  * ER148247: issue with nvme-npiv env, once we delete npivs, after a while,
+	     it is reducing strongswan connections.
+    Change: free sa index during npiv delete
+
+  * ER148123: Issue with Max secure connection with override_lower_limits set
+	     and rekey/reauth with240/480-luns disconnected after 2 hr traffi
+    Change: adjust online|offline notification to app and 
+	    tweak LOGO on session down.
+  * ERXXXXXX: qla2xxx: edif: tweak log message
+  * ERXXXXXX: qla2xxx: edif: Redundant code (already set in qla_edb_node_alloc)
+
+ * ER147707: qla2xxx: Device recovery not happening and OS hungs on qla2xxx
+   Change: Fix RISC RESET completion polling.
+
+ * ER148111: qla2xxx: FCPowerKit reflects huge delays in CMDlets execution.
+   Change: Check lockdown functionality before requesting lockdown feature.
+
+ * ER148277: USCM: Linux Peer showing misleading 'Congested, throttling down,
+	    permitted: 1', prior to 'Reached low watermark, permitted: 2':
+ * Change: Fix misleading debug message
+
+ * ERXXXXXX: adjust request/respond queue size for 28xx
+ * ERXXXXXX: qla2xxx: Change %p to %px in the log messages.
+
+* 10.02.04.00-k              BH                      01/25/2021
+  * ERXXXXXX: qla2xxx: Changed the version for alpha release of channel.
+
+* 10.02.04.00.a3-k              BH                      01/21/2021
+ * ER148182: Call trace observed while executing the RDP_With_FAWWPN_And_NPIV script.
+   Change: qla2xxx: Fix use after free in bsg.
+
+ * ER148236: USCM: Linux host/target SCM state are displayed incorrectly.
+   Change: Put in appropriate module parameter check for throttling.  This
+	ensures the display is correct.
+
+ * ER148235 USCM: Remove the additional debug messages that was causing the system to reboot
+
+* 10.02.04.00.a2-k              BH                      01/15/2021
+* ER148176: fix npiv delete hang.
+  Change: For NPIV delete, all session needs to be brought down first
+    before unregister local host.
+
+* ER148207: USCM: Linux v10.02.04.00.a1-k shows peer
+	    FPIN congestion with permitted: 1 for the low instead of 2.
+  Change: To limit the target q depth to 2.
+
+* ER148123: fix stuck session
+  Change:  Session was stuck due to explicit logout to target was timed out.
+    The target was in an unresponsive state. This timeout induced an error
+    to the GNL command from moving forward.
+
+* ERXXXXXX: qla2xxx: set ql2xrspq_follow_inptr_legacy = 0 by default.
+* ERXXXXXX: qla2xxx: USCM - Update the alarm/warning stats irrespective of the
+	    current state (Healthy or Congested).
+* ERXXXXXX: qla2xxx: consolidate zio threshold setting for both fcp & nvme
+
+* 10.02.04.00.a1-k              BH                      01/07/2021
+* ER148172: USCM: Host side congestions does not show any noticeable performance drop. 
+  Change: The qdepth (outstanding IOs) was going negative. This is due to the fact 
+	  that qdepth is incremented only for NVME IO commands but decremented for
+	  all commands.  Owing to -ve qdepth, the throttling never occured.
+
+* ER148132 qla2xxx: Fix WARNING in pci_irq_get_affinity().
+  Change : 8G does not have multi-queue (depending on FW) and in that path
+	    qla2xxx_map_queues was calling the wrong block API.
+
+* ER148021: (ER148143,ER148131) USCM: Linux sysfs does not update the state for either 
+ 	   "Link Integrity Notification" or "Congestion Notification"; stays = 0
+
+* ERXXXXXX: qla2xxx: DMA-API: device driver frees DMA memory with different size
+* ERXXXXXX: qla2xxx: USCM - Change module param description to indicate
+		     queue depth as default
+
+* 10.02.02.00.a18-k              BH                      12/11/2020
+* ER146784 qla2xxx: Fix response queue handler reading stale packets
+ Change : Though this is a bug in those platforms, reduce such exposures 
+	 by limiting reading packets until the IN pointer.
+
+* ER147952: fix hang on purex processing
+  Change : Remove redudant check of IOCB poison signature.
+
+* ER148021: SCM: Update Link Integrity stats for host
+  Change : qla2xxx: Update Delivery notification stats for host
+
+* EDIF Changes:
+  * ERXXXXXX: qla2xxx: edif: fix crash in driver unload.
+  * ERXXXXXX: qla2xxx: edif: fix delayed AUTH Needed notification
+  * ERXXXXXX: qla2xxx: edif: retweak statistic
+
+* ERXXXXXX: qla2xxx: Decouple qla2xxx_update_sfc_ios and qla2xxx_throttle_req
+	    to avoid negative qdepth for nvme traffic
+* ERXXXXXX: qla2xxx: Add H:C:T info in the log message for fc ports.
+* ERXXXXXX: qla2xxx: [RH 1856641] Reword "Unsupported FAC firmware" message.
+* ERXXXXXX: qla2xxx: Track start and done jiffies for srb.
+* ERXXXXXX: qla2xxx: Add a message on lip reset.
+* ERXXXXXX: qla2xxx: qla2xxx: Add debugging control via module parameter ql2xdebug.
+* ERXXXXXX: qla2xxx: Add a method to trigger firmware dump directly.
+* ERXXXXXX: qla2xxx: Fix IOPS drop seen in some adapters.
+
+* 10.02.02.00.a17-k              BH                      11/19/2020
+* ERXXXXXX: qla2xxx: SCM: Queue depth based throttling - change module param to use queue depth
+
+* 10.02.02.00.a16-k              BH                      11/19/2020
+
+* ERXXXXXX: qla2xxx: SCMR: Queue depth based throttling.
+* ERXXXXXX: qla2xxx: SCMR: Detect & manage fast tgt
+
+* 10.02.02.00.a15-k              BH                      11/12/2020
+
+* ER147875: Driver unload post the isolated port causes server crash
+  Chnage: qla2xxx: If fcport is undergiong deletion return IO with retry.
+
+* ERXXXXXX: qla2xxx: SCM: Address a peer congestion throttling issue.
+* ERXXXXXX: qla2xxx: Fix race between fw dump reset and isolate port.
+* ERXXXXXX: qla2xxx: Updated README file for new module parameters
+
+* 10.02.02.00.a14-k              BH                      11/06/2020
+
+* qla2xxx: SCM: Algorithm enhancements.
+     1. Implement a 100ms timer to help throttle at 100ms granularity instead of 1 sec.
+     2. Mechanism to detect IO workload and throttle based on IOPS for IOPS intensive 
+        workload, and switch to using MBPS for lower IOPS workload.
+     3. Define a lower bound for IOPS/MBPS below which throttling will not be initiated.
+
+* ER146725: eDIF another driver panic running script:  ./test_target_no_unload.sh
+  Change: qla2xxx: [ER146725] Fix crash in qla_nvme_abort_set_option.
+
+* ER147825: issue w,r,t PPC BE-QLE2782 adapter, Fw flash failed with 2.4.0. build 12 release
+  Change: qla2xxx: [ER147825] Fix flash update in 28XX adapters on big endian machines.
+
+* ER147771: Call Trace while shutting down the adapter ports (LINK DOWN).
+  Change: qla2xxx: Handle aborts correctly for port undergoing deletion.
+
+* ERXXXXXX: qla2xxx: Fix race between fw dump reset and isolate port.
+* ERXXXXXX: qla2xxx: Add scsi_change_queue_depth to slave configure.
+
+* 10.02.02.00.a13-k              BH                      10/28/2020
+
+ * ER147600: Cisco: rpd ELS cmd fail to fetch the speed capabilities
+   Change: qla2xxx: Used correct rdp spec, which was broken during code clean-up.
+
+ * ER147695: FC-NVMe target discovery fails when initator wwpn < target wwpn in an N2N (Direct Attach) config
+   Change: qla2xxx: fix N2N + NVME connect retry fail
+
+ * ER147832: Issue with uSCM Linux with QCC CLI for some configuration
+   Change: qla2xxx: Show event severity only when device state is congested.
+
+ * ER147824 : scmr_stat sysfs node runs out of memory
+   Change: qla2xxx: Come up with a compact version of scmr_stat
+
+ * ER147823: NVMe IO is not getting throttled up or down.
+   Change: qla2xxx: Enable throttle control for NVMe targets for Peer Congestion.
+
+ * ERXXXXXX: qla2xxx: Count tgt short term link if link comes back before dev_loss_tmo.
+ * ERXXXXXX: qla2xxx: Correct the check for fcport while displaying target counters.
+ * ERXXXXXX: qla2xxx: Change trigger for host short term link down to dev loss tmo.
+ * ERXXXXXX: qla2xxx: Move an SCM log under a debug level.
+ * ERXXXXXX: qla2xxx: Set vendor_rsp[0] value.
+ * ERXXXXXX: qla2xxx: Make throttling messages more informative.
+
+* 10.02.02.00.a12-k              SK                      10/15/2020
+ * ER147625: NVMe IO's are failing with Read/Write after LIP reset.
+   Change: qla2xxx:Return EBUSY until the remote port delete finishes.
+
+ * ER147653: Target side strongswan start/stop, make initiator crashed.
+   Change: qla2xxx: edif: v2 fix double bsg done.
+
+ * ER147791: USCM: clear option is not clearing hba alarm/warning, or clear cong or nvme target stats.
+   Change: qla2xxx: Clear Sev and NVMe Target Stats.
+
+ * ER147793: USCM: Throttling has wrong throttling up info and event period is not honored.
+   Change: qla2xxx: Fix Throttling algorithm regression.
+
+ * ER147759: NVMe Admin commands are getting throttled and causing admin queue failures.
+   Change: qla2xxx: Throttle NVMe I/O commands only.
+
+ * ERXXXXXX: qla2xxx: edif: fix aes_gmac mode.
+ * ERXXXXXX: qla2xxx: edif: v2: standardize on port_id_t for bsg api.
+ * ERXXXXXX: qla2xxx: edif: fix 4byte align.
+ * ERXXXXXX: qla2xxx: edif: fix ELS meta data.
+ * ERXXXXXX: qla2xxx: Clear Congestion State/Throttling during chip Reset.
+ * ERXXXXXX: qla2xxx: Clear SCM Severity as part of SCM Stats Clear.
+
+* 10.02.00.02.a11-k              BH                      10/09/2020
+ * ER147734 : Lip reset on the isolated port causes server crash
+   Change: qla2xxx: Don't allow FW, MPI and lip reset on isolated port.
+
+ * ER147479 - PPC BE RH7.6 - qla2xxx driver loading - machine crashed.
+   Change: qla2xxx: Fixes for big endian machines
+
+ * ER147646: Call Trace observed while validating a MPI Pause test scenario. 
+   Change:  qla2xxx: Correct the WARN_ON check in qla_nvme_abort_set_option.
+
+ * ER147615: Throttling does not work with low I/Os.
+   Change:  qla2xxx: Check and round off fractional I/Os to 1 on ISP 27xx/28xx Series Adapters
+
+ * ERXXXXXX: qla2xxx: List NVMe targets under scmr_stats on ISP 27xx/28xx Series Adapters
+ * ERXXXXXX: qla2xxx: Don't check for port isolation during abort isp.
+ * ERXXXXXX: qla2xxx: SCM: Turn off SCM port parameter update mailbox command.
+ * ERXXXXXX: qla2xxx: Fix I/O failures during remote port toggle testing
+
+
+* 10.02.00.02.a10-k              BH                      09/25/2020
+  SCM Changes:
+  *  ERXXXXXX:
+     Changes - qla2xxx: Clear Congestion state when an RSCN is received/target is torn down.
+               qla2xxx: throttling algorithm improvement.
+               qla2xxx: Add throttling support for NVMe targets.
+ 
+  EDIF Changes: 
+  * ERXXXXX: LUN loss on ipsec stop/start on target side.
+    Change: save Nport on receive of PLOGI
+  * ERXXXXX: fix ELS receive collision between physical and NPIV hosts.
+    Change: remove erroneous source Nport ID search.
+ 
+  * ER147570: FCP Performance Drop in  latest driver for smaller IOs size.
+    Change:  qla2xxx: Change WQ_UNBOUND to WQ_MEM_RECLAIM. WQ_MEM_RECLAIM : wq is guaranteed to have at least one execution context regardless of memory pressure.
+ 
+  * ER147632:  QLE2774: RHEL 8.2 System crashes while upgrading he FW from 9.6.0 to 9.6.1 with QCC CLI build 12
+    Change:  qla2xxx: Fix system crash on nvme abort path by checking sp of aborting command before accessing it.
+ 
+  * ER147418: server crash seen when trying to capture the debugfs stat on isolated port.
+  * ER147645: System panic while trying to capture debugfs stats for EED.
+    Change:  qla2xxx: Check rport before accessing target number.
+ 
+  * ER147632: Fix potential stale mem access
+    Change: remove stale sp pointer reference
+ 
+  * CQXXXXXX: FPIN events are not readily decodable.
+    Change: qla2xxx: Make FPIN events prints human readable.
+       
+  * ER146879: Add support to clear SCM Stats
+    Change: qla2xxx: Added support to clear SCM/SCMR Stats on ISP 27xx/28xx Series Adapters
+ 
+  * ERXXXXXX: qla2xxx: Allow get host stat during reset and sync reset.
+  * ERXXXXXX: qla2xxx: Set reset_cmd_err_cnt on reset failure only.
+  * ERXXXXXX: qla2xxx: Add isolated flag and return EPERM on isolation.
+  * ERXXXXXX: qla2xxx: Count short term link if link comes back in 10 sec.
+  * ERXXXXXX: qla2xxx: Don't check for fw_started while posting nvme command.
+  * ERXXXXXX: qla2xxx: Pass irq_offset to blk_mq_pci_map_queues API.
+  * ERXXXXXX: qla2xxx: lockdown: fix stale sp access.
+  * BZ1868688:  qla2xxx: tear down session if FW say its down.
+
+* 10.02.00.02.a9-k              BH                      09/03/2020
+  * ER147554 - sg_reset appears hung iterating over too many Qpairs.
+    Change - qla2xxx: limit interrupt vectors to number of cpu.
+
+  * ERXXXXX - qla2xxx: klocwork: Fix Bit field 'mpi_*' has one bit and is signed.
+
+  * ERXXXXX - qla2xxx: Change post del message from debug level to log level.
+
+  * ERXXXXX - qla2xxx: lockdown: fixup - Change error response as per API test.
+
+  * ERXXXXX - qla2xxx: Fix map_queue interface to use the correct blk-mq call.
+
+  * ERXXXXX - Added Structural changes for SCM Phase 2 support.
+    Change : qla2xxx: Update structure definitions for SCM to support backward compatibility.
+
+* 10.02.00.02.a8-k              BH                      08/30/2020
+  * ERXXXXXX - Fix point-to-point (N2N) device discovery issue.
+    Change - qla2xxx: Fix point-to-point (N2N) device discovery issue.
+
+  * ERXXXXXX: To wait for ABTS response on I/O timeouts for NVMe.
+    Change - qla2xxx: To wait for ABTS response on I/O timeouts for NVMe.
+
+  * ER147523 : BSG stack trace and SCM display issues.
+    Change - SCM: Functional regression with a6 release.
+
+  * ER 147413: edif: Fix issue with DIF enable target discovery.
+    Change - qla2xxx: edif: Fix issue with DIF enable target discovery.
+
+  * ER147480 clear ASYNC_ACTIVE flag to allow relogin.
+    Change - qla2xxx: fix stuck session.
+
+  * ERXXXX: lockdown: add mpi flash lock down support
+    Change - qla2xxx: lockdown: add mpi flash lock down support
+
+* 10.02.00.02.a7-k              BH                      08/22/2020
+  * ER147495 - edif changes 
+    Change - qla2xxx: edif: fix nvme discovery failure
+             qla2xxx: edif: fix els corruption.
+
+  * ER147478 - SLES15sp1 10.02...a6-k compile warning
+    Change - qla2xxx: Compilation changes for sles15sp1
+
+  * ERXXXXXX - add mpi flash lock down support
+    Change - qla2xxx: lockdown: add mpi flash lock down support
+             qla2xxx: lockdown: fix compile problem. do not submit
+
+  * ERXXXXXX: SCMR changes
+    Change - qla2xxx: SCMR: Correct scmr_outstanding_reqs accounting.
+             qla2xxx: SCM: Changes to separate current_events and current_state.
+             qla2xxx: SCMR: Increase local array size.
+
+  * ER147298 : USCM "Congestion Warning" counter regression
+    Change - qla2xxx: Correct FPIN Structure Definition (Severity).
+
+* 10.02.00.02.a6-k              BH                      08/13/2020
+  * ERXXXXXX - fix crash on session cleanup + unload.
+    Change - qla2xxx: fix crash on session cleanup + unload.
+
+  * ER147329 - edif changes 
+    Change - qla2xxx: edif: fix compile error. do not submit
+             qla2xxx: edif: fix double free on ELS send failure.
+             qla2xxx: edif: reject els if non secure device.
+             qla2xxx: edif: reject ELS on session down.
+             qla2xxx: edif: redefine purex dest addr to be more consistent.
+             qla2xxx: edif: tweak debug messages.
+             qla2xxx: edif: fix nvme+edif target connect problem.
+
+  * ER147460 - issue with Diag test on QCC CLI 2.4.0 build 10 with 10.2.00.2-a5 driver
+    Change - qla2xxx: edif: move bsg auth els into separate routine.
+             qla2xxx: edif: Fix error in BSG ELS path that has valid response data.
+
+  * ER147312 - Add support to report MPI FW state.
+    Change - qla2xxx: Add support to report MPI FW state.
+             qla2xxx: Fix reset of MPI firmware.
+             qla2xxx: Fix MPI reset needed message.
+
+  * ER147437 - With a5 driver observed warning messages. 
+    Change - qla2xxx: Compilation changes for Citrix, rhel and sles.
+
+* 10.02.00.02.a5-k              BH                      07/31/2020
+   * ER147418: server crash seen when trying to capture the debugfs stat on isolated port.
+    Change - qla2xxx: Don't process target debugfs stats if port is isolated.
+
+   * ERXXXXXX : Add SCM stats to scmr_stats node.
+     Change - qla2xxx: Add SCM stats to scmr_stats node.
+
+   * ER147419 : Fix crash due to request q pointer extraction failure.
+     Change - qla2xxx: Latency measurement patch.
+
+   * ERXXXXXX : edif: remove redundant field in port_id_t
+     Change -qla2xxx: edif: remove redundant field in port_id_t
+
+   * ER147331 : extract bbc from PLOGI template payload.
+     Change -qla2xxx: Fix buffer-buffer credit extraction error
+
+   * ERXXXXXX : Split qla2x00_configure_local_loop()
+     Change scsi: qla2xxx: Split qla2x00_configure_local_loop()
+
+   * ERXXXXXX : SCMR - Add I/O flow control.
+     Change - qla2xxx: SCMR - Add I/O flow control.
+
+* 10.02.00.02.a4-k              BH                      07/23/2020
+   * ER147402 - Do not install nvme auto connect script if OS is installing it.
+     Change - qla2xxx: auto-connect scripts are install based on nvme-cli package.
+
+   * ERXXXXXX - Fixed return status of nvme fcp request.
+     Change - qla2xxx: Set NVME status code for failed NVME FCP request.
+
+   * ERXXXXXX - Multi-que support for TMF.
+     Change - qla2xxx: Multi-que support for TMF.
+
+   * ERXXXXXX – edif changes
+     Change - qla2xxx: edif: simplify reserve/release of sa_index.
+              qla2xxx: edif: tweak debug log.
+              qla2xxx: edif: adjust ELS resp length.
+              qla2xxx: edif: send logo on app stop.
+              qla2xxx: edif: remove prlo in session deletion.
+              qla2xxx: edif: Fix app stop stall.
+
+   * ER147298 - USCM "Congestion Warning" counter regression w/.65 driver.
+     Change - qla2xxx: Correct fpin_descriptor definition.
+              qla2xxx: Consolidate EDIF & SCM Purex Calls.
+
+   * ERXXXXXX - Calculate avg. time taken by different components for IO completion.
+     Change - qla2xxx: Latency measurement patch.
+
+* 10.02.00.02.a3-k              BH                      07/16/2020
+   * ER147348 - Observing firmware dump while running qaucli -g post port isolation.
+     Change - qla2xxx: Don't check firmware state in case of chip is down.
+
+   * ER147338 - SLES: Driver load failed - modprobe: ERROR: module 'qla2xxx' is unsupported.
+     Change - qla2xxx: Add support for loading external modules on SuSE.
+
+   * ER147361 - System panic after enabling port isolated during TimeOutReset.
+     Change - qla2xxx: Synchronize the update the host counters using lock.
+
+   * ER147370 - Hardware Error counter not incrementing for MBX command timeout.
+     Change - qla2xxx: Update hardware error count for various error conditions.
+
+   * ERXXXXXX - The change is to help in debuggging.
+     Change - qla2xxx: Move some messages from debug to normal log level.
+
+   * ER147346 - Observed a call trace after port isolation.
+     Change - qla2xxx: Fix the call trace for flush workqueue.
+
+   * ERXXXXXX - For debug purpose.
+     Change - qla2xxx: Add error counters to debugfs node.
+
+* 10.02.00.02.a2-k              AE                      07/10/2020
+   * ERXXXXXX - qla2xxx: Fix TCM compilation issues.
+     Change - Enabled build of tcm_qla2xxx module and fixed compile issues.
+
+   * ERXXXXXX - qla2xxx: edif : Added back the app_stop wait and avoid if link is down.
+     Change - Added wait during app stop.
+
+   * ERXXXXXX - qla2xxx: Set BIT_13 for NVMe Async events.
+     Change - Driver changes to skip SLER for Async event command.
+
+   * ER147323 - qla2xxx: Correct the check for sscanf return value.
+     Change - Driver updated to check version correctly.
+
+   * ERXXXXXX - qla2xxx: v2: Add EDIF support.
+     Change - Refactoring EDIF code for modularity.
+
+   * ER147298 - Congestion Warning/Alarm counters fail to increment
+     Change - Update driver to increment the counters for congestion signals.
+
+* 10.02.00.02.a1-k              AE                      06/29/2020
+   * qla2xxx: Enable IOCB throttling by default.
+   * qla2xxx: Implementation to get and manage host, target stats and initiator port.
+   * qla2xxx: Add SLER and PI control support.
+   * qla2xxx: Do not log message when reading port speed via sysfs
+   * qla2xxx: fix null pointer access.
+   * qla2xxx: Use MPI hang trigger to do PEGTUNE halt.
+   * qla2xxx: Reduce erroneous error in link reset path
+   * qla2xxx: v2: fix stalled N2N reconnect.
+   * qla2xxx: Fix warnings on SLES12SP5.
+   * qla2xxx: Fix compilation issues on SLES15
+   * qla2xxx: Compilation Fixes for SLES15SP1.
+   * qla2xxx: Debugfs compilation issue fix for RH7.6.
+   * qla2xxx: Fix gcc test compile error output being printed.
+   * qla2xxx: Timestamp device online and offline transitions.
+   * qla2xxx: Add rport fields in debugfs.
+   * qla2xxx: Allow dev_loss_tmo setting for FC-NVMe devices.
+   * qla2xxx: Setup debugfs entries for remote ports.
+   * qla2xxx: Compilation fixes for RH8.2
+   * qla2xxx: Compilation changes for RH7.6
+   * qla2xxx: Fixes for compilation on RH7.x I
+   * qla2xxx: bsg_job to bsg_job_t
+   * qla2xxx: I Unify source code to work with newer kernels.
+   * qla2xxx: Makefile changes from code-uni-devel-10x.
+   * qla2xxx: qla_edif file changes to compile the driver.
+   * qla2xxx: Fix compilation issues.
+   * qla2xxx: Fix Makefile issue.
+   * qla2xxx: fix compile error
+   * qla2xxx: Use explicit LOGO in target mode
+   * qla2xxx: Add EDIF support.
+   * qla2xxx: Addd edif related files.
+   * qla2xxx: Fix MPI failure AEN (8200) handling.
+   * qla2xxx: SCM - Backport optimizations and style changes from upstream work.
+   * qla2xxx: Fix warning in qla_attr.c file.
+   * qla2xxx: Fix nvme compilation error.
+   * qla2xxx: Fix crash in alloc w/GFP_KERNEL + interrupt
+   * qla2xxx: v2: add iocb resource tracking.
+   * qla2xxx: Fix WARN_ON in qla_nvme_register_hba.
+   * qla2xxx: Allow ql2xextended_error_logging special value 1 to be set anytime.
+   * qla2xxx: Make tgt_port_database available in initiator mode.
+   * qla2xxx: reduce noisy debug message.
+   * qla2xxx: Fix mailbox Ch erroneous error
+   * qla2xxx: fix login timeout.
+   * qla2xxx: Accomodate for SCM FW attribute bit change.
+   * qla2xxx: post FC event (FPIN) to transport FPIN handler.
+   * qla2xxx: Hide fc_host_fpin_rcv kernel dependency.
+   * qla2xxx: Add changes to compile across various kernels.
+   * qla2xxx: Use active targets to update SCM stats.
+   * qla2xxx: Move SCM functions to qla_isr to keep changes local.
+   * qla2xxx: Code to process FLOGI ACC extended payload.
+   * qedf: Fix compilation issue - revisit.
+   * qla2xxx: SCM Phase 1 Implementation + 2 other patches.
+   * qla2xxx: Enable PUREX passthru post ISP reset.
+   * qla2xxx: Fix hang when issuing nvme disconnect-all in NPIV.
+   * qla2xxx: performance tweak
+   * scsi: qla2xxx: fix fcport null pointer access.
+   * fixup! qla2xxx: Fix unbound NVME response length.
+   * scsi: qla2xxx: Fix unbound NVME response length
+   * qla2xxx: Add host attribute to trigger MPI hang.
+   * qla2xxx: fix mtcp dump collection failure.
+   * qla2xxx: Set Nport ID for N2N
+   * qla2xxx: Fix crash during device discovery.
+   * qla2xxx: Handle NVME status iocb correctly.
+   * qla2xxx: Remove restriction of FC T10-PI and NVME
+   * qla2xxx: serialize fc_port alloc in N2N
+   * qla2xxx: NPIV does not come up after FW dump.
+   * qla2xxx: fix RDP respond data format bug.
+   * qla2xxx: force semaphore on flash validation failure.
+   * qla2xxx: add more FW debug information
+   * qla2xxx: Revert: Disable T10-DIF feature with FC-NVMe during probe
+   * qla2xxx: Update BPM enablement semantics.
+   * qla2xxx: fix FW resource print error.
+   * qla2xxx: Use a dedicated interrupt handler for 'handshake-required' ISPs.
+   * qla2xxx: Ensure flash updates return possible failure status through bsg interface.
+   * qla2xxx: Improved secure flash support messages
+   * qla2xxx: fix flag passing error
+   * qla2xxx: Use FC generic update firmware options routine for ISP27xx.
+   * qla2xxx: Avoid setting firmware options twice in 24xx_update_fw_options.
+   * qla2xxX: Add 16.0GT for PCI String
+   * qla2xxx: Use FW_STARTED macro
+   * qla2xxx: Add fixes for mailbox command
+   * qla2xxx: Fix login IOCB flag
+   * qla2xxx: Save rscn_gen for new fcport
+   * qla2xxx: firmware option 3 is clobbered by speed set
+   * qla2xxx: ISP28xx active FW region
+   * qla2xxx: Add portname to print logs in qla24xx_logio_entry().
+   * qla2xxx: Correction to MB in-direction selection in qla2x00_echo_test().
+   * qla2xxx: Correction to selection of loopback/echo test.
+   * qla2xxx: Use endian macros to assign static fields in fwdump header.
+   * qla2xxx: Add Speed in SFP print information
+   * qla2xxx: Fix RDP response size
+   * qla2xxx: Handle cases for limiting RDP response payload length.
+   * qla2xxx: Add deferred queue for processing ABTS and RDP.
+   * qla2xxx: Cleanup ELS/PUREX iocb fields.
+   * qla2xxx: Add devid's and conditionals for 28xx.
+   * qla2xxx: Add vendor extended FDMI additions and amendments.
+   * qla2xxx: Provide separate RDP enable.
+   * qla2xxx: Add vendor extended RDP additions and amendments.
+   * qla2xxx: Add changes in preparation for vendor extended FDMI/RDP.
+   * qla2xxx: Add 2061 PCI ID
+   * qla2xxx: Remove all DIX-0 references
+   * qla2xxx: Add endianizer macro calls to fc host stats.
+   * qla2xxx: Add sysfs node for D-Port Diagnostics AEN data.
+   * qla2xxx: Move free of fcport out of interrupt context.
+   * qla2xxx: Add beacon LED config sysfs interface.
+   * qla2xxx: Add sysfs hooks for FC-NVMe autoconnect
+
+* 10.01.00.22-k              AE                      06/29/2020
+   * Upstream driver as part of Linux 5.6
+
+2. Known Issues
+   * Initiator mode driver shows stack trace while unloading driver. This issue
+     seems to be related to sysfs group not found for kobject during driver
+     unload.
+
+3. Notices
+
+Information furnished in this document is believed to be accurate and
+reliable. However, Cavium Inc assumes no responsibility for
+its use, nor for any infringements of patents or other rights of
+third parties which may result from its use. Cavium Inc
+reserves the right to change product specifications at any time
+without notice. Applications described in this document for any of
+these products are only for illustrative purposes. Cavium Inc
+makes no representation nor warranty that such applications are
+suitable for the specified use without further testing or
+modification. Cavium Inc assumes no responsibility for any
+errors that may appear in this document.
+
+4. Contacting Support
+
+   For further assisance, contact Cavium Technical Support at:
+   http://support.qlogic.com
+
+
+Trademarks
+
+Accelera, Accelerating Cluster Performance, InfiniCon Systems,
+InfiniNIC, InfiniPath, InfiniView, QLA, Cavium, the Cavium logo,
+ReadyPath, SANdoctor, SANsurfer, and SilverStorm are registered
+trademarks of Cavium Inc. All other brand and product names
+are trademarks or registered trademarks of their respective owners.
+
+
+(c) Copyright 2018. All rights reserved worldwide. Cavium, the Cavium
+logo, and the Powered by Cavium logo are registered trademarks of
+Cavium Inc. All other brand and product names are trademarks
+or registered trademarks of their respective owners.
